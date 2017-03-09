@@ -1,7 +1,7 @@
 package project2;
 
 import java.util.Scanner;
-import java.util.Arrays;
+import java.util.BitSet;
 
 public class Project2 {
 
@@ -24,15 +24,13 @@ public class Project2 {
     }
 
     static boolean containsDuplicates(final int[][] squareMatrix) {
-        boolean[] bitmap = new boolean[squareMatrix.length];
-        Arrays.fill(bitmap, false);
+        BitSet foundNumbers = new BitSet();
         for (int row = 0; row < squareMatrix.length; row++) {
             for (int column = 0; column < squareMatrix.length; column++) {
-                if (!bitmap[squareMatrix[row][column]]) {
-                    bitmap[squareMatrix[row][column]] = true;
-                } else {
+                if (foundNumbers.get(squareMatrix[row][column])) {
                     return true;
                 }
+                foundNumbers.set(squareMatrix[row][column]);
             }
         }
         return false;
@@ -41,50 +39,34 @@ public class Project2 {
     // Requirements for it to be complete.
     // Each number in the matrix is unquie.
     // It has the same sum in all directions.
-    static Boolean isMagicSquare(final int[][] squareMatrix) {
+    static Boolean isMagicSquare(final int[][] squareMatrix, final int MAGIC_CONSTANT) {
         // No dupes.
         if (containsDuplicates(squareMatrix)) {
             return false; // a square matrix cannot contain any duplicates.
         }
-        //For diagonal elements
-        int sum = 0;
+        int diagonalSum = 0, reversedDiagonalSum = 0, rowSum = 0, columnSum = 0;
         for (int row = 0; row < squareMatrix.length; row++) {
             for (int column = 0; column < squareMatrix.length; column++) {
+                rowSum += squareMatrix[row][column];
+                columnSum += squareMatrix[column][row];
                 if (row == column) {
-                    sum = sum + squareMatrix[row][column];
+                    diagonalSum += squareMatrix[row][column];
+                }
+                if (row + column == squareMatrix.length - 1) {
+                    reversedDiagonalSum += squareMatrix[(squareMatrix.length - 1) - row][(squareMatrix.length - 1) - column];
                 }
             }
-        }
-
-        //For Rows
-        int flag = 0;
-        for (int row = 0; row < squareMatrix.length; row++) {
-            int sum1 = 0;
-            for (int column = 0; column < squareMatrix.length; column++) {
-                sum1 = sum1 + squareMatrix[row][column];
-            }
-            if (sum == sum1) {
-                flag = 1;
-            } else {
-                flag = 0;
-                break;
+            if (rowSum == MAGIC_CONSTANT && columnSum == MAGIC_CONSTANT && row != squareMatrix.length - 1) {
+                rowSum = 0;
+                columnSum = 0;
+            } else if (rowSum != MAGIC_CONSTANT || columnSum != MAGIC_CONSTANT) {
+                return false;
             }
         }
-
-        //For Columns
-        for (int row = 0; row < squareMatrix.length; row++) {
-            int sum2 = 0;
-            for (int column = 0; column < squareMatrix.length; column++) {
-                sum2 = sum2 + squareMatrix[column][row];
-            }
-            if (sum == sum2) {
-                flag = 1;
-            } else {
-                flag = 0;
-                break;
-            }
-        }
-        return flag == 1;
+        return (reversedDiagonalSum == MAGIC_CONSTANT
+                && rowSum == MAGIC_CONSTANT
+                && columnSum == MAGIC_CONSTANT
+                && diagonalSum == MAGIC_CONSTANT);
     }
 
     static Boolean isValidPosition(int row, int column, int n) {
@@ -94,19 +76,24 @@ public class Project2 {
     public static void main(String[] args) {
         int n;
         Scanner input = new Scanner(System.in);
+
         while (true) {
             System.out.print("Let's make a Magic Square! How big should it be? ");
             n = input.nextInt();
-            if (n > 8 || n < 3) {
+            if (n < 3) {
                 System.out.println("That would violate the laws of mathematics!");
+            } else if (n > 8) {
+                System.out.println("That's huge! Please enter a number less than 9.");
             } else {
                 break;
             }
         }
+
+        final int MAGIC_CONSTANT = (int) ((0.5 * n) * (Math.pow(n, 2) + 1));
         System.out.println("Great!");
         int[][] squareMatrix = new int[n][n];
 
-        while (!isMagicSquare(squareMatrix)) {
+        while (!isMagicSquare(squareMatrix, MAGIC_CONSTANT)) {
             System.out.println("The square currently looks like this:");
             printSquareMatrix(squareMatrix);
 
