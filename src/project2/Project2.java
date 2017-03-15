@@ -25,11 +25,11 @@ public class Project2 {
      * @return the value if it is value, otherwise return 0.
      */
     static Boolean validInput(int row, int column, int value, int n) {
-        if ((row > n || row < 0) && (column > n || column < 0) && (value < 1 || value > Math.pow(n, 2))) {
+        if (((row >= n || row < 0) || (column >= n || column < 0)) && (value < 1 || value > Math.pow(n, 2))) {
             System.out.printf("Invalid row or column entered, please choose a value under %d.\n", n);
             System.out.printf("You can only user numbers betweeen 1 and %.0f for this square.\n", Math.pow(n, 2));
             return false;
-        } else if ((row > n || row < 0) && (column > n || column < 0)) {
+        } else if ((row >= n || row < 0) || (column >= n || column < 0)) {
             System.out.printf("Invalid row or column entered, please choose a value under %d.\n", n);
             return false;
         } else if (value < 1 || value > Math.pow(n, 2)) {
