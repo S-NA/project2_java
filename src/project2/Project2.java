@@ -24,7 +24,7 @@ public class Project2 {
      * @param n - the size our matrix.
      * @return the value if it is value, otherwise return 0.
      */
-    static Boolean validInput(int row, int column, int value, int n) {
+    static boolean validInput(int row, int column, int value, int n) {
         if (((row >= n || row < 0) || (column >= n || column < 0)) && (value < 1 || value > Math.pow(n, 2))) {
             System.out.printf("Invalid row or column entered, please choose a value under %d.\n", n);
             System.out.printf("You can only user numbers betweeen 1 and %.0f for this square.\n", Math.pow(n, 2));
@@ -57,7 +57,7 @@ public class Project2 {
     /**
      * Checks the referenced object to see if it contains any duplicates.
      * @param matrix - the reference to the matrix object to print.
-     * @return true or depending on whether duplicates exist (true if they do).
+     * @return true depending on whether duplicates exist (true if they do).
      */
     static boolean containsDuplicates(final int[][] matrix) {
         BitSet foundNumbers = new BitSet();
@@ -78,7 +78,7 @@ public class Project2 {
      * @param MAGIC_CONSTANT - the correct sum for diagonals, columns, and rows.
      * @return true if the matrix is a magic square, else false.
      */
-    static Boolean isMagicSquare(final int[][] matrix, final int MAGIC_CONSTANT) {
+    static boolean isMagicSquare(final int[][] matrix, final int MAGIC_CONSTANT) {
         // Call our duplicate checking function if true, return false.
         if (containsDuplicates(matrix)) {
             return false;
