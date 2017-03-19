@@ -67,7 +67,7 @@ public class Project2 {
      * @param matrix - the reference to the matrix object to print.
      */
     static void printMatrix(final int[][] matrix) {
-        System.out.println();
+        System.out.println(); // Format the matrix to not be cut off.
         for (int row = 0; row < matrix.length; row++) {
             for (int column = 0; column < matrix.length; column++) {
                 System.out.printf("%d\t", matrix[row][column]);
@@ -91,6 +91,7 @@ public class Project2 {
             diagonalSum += matrix[row][row];
             reversedDiagonalSum += matrix[(matrix.length - 1) - row][(matrix.length - 1) - row];
             for (int column = 0; column < matrix.length; column++) {
+                // Magic squares cannot contain ANY zeros.
                 if (matrix[row][column] == 0) {
                     return false;
                 }
@@ -104,6 +105,7 @@ public class Project2 {
                 return false;
             }
         }
+        // Return the result of the boolean expression.
         return (MAGIC_CONSTANT == reversedDiagonalSum
                 && MAGIC_CONSTANT == rowSum
                 && MAGIC_CONSTANT == columnSum
@@ -117,9 +119,10 @@ public class Project2 {
      * @param args - arguments passed via the command line.
      */
     public static void main(String[] args) {
-        int n;
+        int n; // Store the size of the matrix.
         Scanner input = new Scanner(System.in);
-
+        // Loop until the user enters a valid number for the size of the magic
+        // square.
         while (true) {
             System.out.print("Let's make a Magic Square! How big should it be? ");
             try {
@@ -142,7 +145,8 @@ public class Project2 {
         // http://mathworld.wolfram.com/MagicConstant.html
         final int MAGIC_CONSTANT = (int) ((0.5 * n) * (Math.pow(n, 2) + 1));
         int[][] matrix = new int[n][n];
-
+        // Loop until the sum of each row, column, and diagonals equal the
+        // magic constant.
         while (!isMagicSquare(matrix, MAGIC_CONSTANT)) {
             int row = -1, column = -1, value = -1;
             System.out.println("\nWhere do you want to put a new value?");
@@ -171,7 +175,7 @@ public class Project2 {
                 }
             } while (!isValidValue(matrix, value, row, column));
             matrix[row][column] = value;
-        }
+        } // When the loop is finished, that means we have a magic square.
         System.out.println("\nVictory!");
     }
 }
